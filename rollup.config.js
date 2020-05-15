@@ -1,14 +1,14 @@
-import typescript from '@rollup/plugin-typescript';
 import babel from '@rollup/plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
+import { string } from 'rollup-plugin-string';
 
 const dist = 'dist';
 const bundle = 'bundle';
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
-  input: 'src/index.tsx',
+  input: 'src/index.js',
   output: [
     {
       file: `${dist}/${bundle}.cjs.js`,
@@ -29,10 +29,12 @@ export default {
   ],
   plugins: [
     resolve(),
-    typescript(),
     babel({
       exclude: 'node_modules/**',
       babelHelpers: 'bundled',
+    }),
+    string({
+      include: '**/*.css',
     }),
     production && terser(),
   ],
